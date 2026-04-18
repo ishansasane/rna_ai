@@ -8,14 +8,22 @@ def parse_ct_file(filepath):
         lines = f.readlines()
         
     if not lines: return None, None
+    
+    # Skip comment lines
+    start_idx = 0
+    while start_idx < len(lines) and lines[start_idx].strip().startswith('#'):
+        start_idx += 1
+        
+    if start_idx >= len(lines): return None, None
+    
     try:
-        length = int(lines[0].strip().split()[0])
+        length = int(lines[start_idx].strip().split()[0])
     except:
         return None, None
         
     seq = []
     pairs = []
-    for line in lines[1:]:
+    for line in lines[start_idx+1:]:
         parts = line.strip().split()
         if len(parts) >= 5:
             base = parts[1].upper()
