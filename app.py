@@ -51,7 +51,8 @@ def predict(req: PredictRequest):
     pairs = []
     for i in range(L):
         for j in range(i + 1, L):
-            if probs[i, j] > 0.5:
+            # Lowered threshold from 0.5 to 0.1 to account for high class imbalance
+            if probs[i, j] > 0.1:
                 pairs.append([i, j, float(probs[i, j])])
                 
     return {
