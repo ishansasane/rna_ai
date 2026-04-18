@@ -16,7 +16,11 @@ def train(data_dir, epochs=5, batch_size=16, lr=0.001, max_len=200):
     
     model = RNAPredictor().to(device)
     optimizer = optim.Adam(model.parameters(), lr=lr)
-    criterion = nn.BCEWithLogitsLoss(reduction='none')
+    
+    # We add a pos_weight of 100 because 99% of the map is empty. 
+    # This forces the AI to pay 100x more attention to actual bonds!
+    pos_weight = torch.tensor([100.0]).to(device)
+    criterion = nn.BCEWithLogitsLoss(reduction='none', pos_weight=pos_weight)
     
     print(f"Starting training on dataset of size {len(dataset)}...")
     
