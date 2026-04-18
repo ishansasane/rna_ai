@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RNA.ai | Bioinformatics Lab</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
+    <script src="https://cdn.plot.ly/plotly-2.24.1.min.js"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+<body>
+    <div class="grid-background"></div>
+    <div class="scanner-line"></div>
+    
+    <nav class="top-nav">
+        <div class="brand">
+            <span class="logo-icon">🧬</span>
+            <span class="logo-text">RNA<span class="accent">.ai</span> | Structural Genomics Lab</span>
+        </div>
+        <div class="status">
+            <span class="status-dot"></span> System Online
+        </div>
+    </nav>
+
+    <div class="dashboard-container">
+        <!-- Left Panel: Input & Controls -->
+        <aside class="control-panel">
+            <div class="panel-header">
+                <h2>Sequence Input</h2>
+            </div>
+            <div class="input-section">
+                <p class="instruction">Enter FASTA or raw RNA sequence (A, C, G, U)</p>
+                <textarea id="sequence" placeholder="AUGCAUGCAUGC..."></textarea>
+                <div class="controls">
+                    <button id="predict-btn" class="cyber-btn">
+                        <span class="btn-text">INITIALIZE PREDICTION</span>
+                        <div class="loader" id="btn-loader" style="display: none;"></div>
+                    </button>
+                    <button id="demo-btn" class="secondary-btn">Load Demo Sequence</button>
+                </div>
+            </div>
+
+            <div class="panel-header" style="margin-top: 2rem;">
+                <h2>Analysis Readout</h2>
+            </div>
+            <div class="readout-section">
+                <div class="data-row">
+                    <span class="label">Sequence Length</span>
+                    <span class="value" id="res-length">--</span>
+                </div>
+                <div class="data-row">
+                    <span class="label">Predicted Pairs</span>
+                    <span class="value" id="res-pairs-count">--</span>
+                </div>
+                <div class="data-row">
+                    <span class="label">Dot-Bracket Structure</span>
+                </div>
+                <div class="dot-bracket" id="dot-bracket-out">...................</div>
+            </div>
+        </aside>
+
+        <!-- Right Panel: Visualizations -->
+        <main class="visualization-panel">
+            <div class="tabs">
+                <button class="tab-btn active" data-target="viz-2d">2D Structure Map</button>
+                <button class="tab-btn" data-target="viz-heatmap">Pairing Heatmap</button>
+                <button class="tab-btn" data-target="viz-list">Confidence Rankings</button>
+            </div>
+
+            <div class="viz-content active" id="viz-2d">
+                <div class="placeholder-text" id="viz-placeholder">Awaiting Sequence Data...</div>
+                <div id="rna-viz-container"></div>
+                <div class="legend">
+                    <span class="leg-item"><span class="dot a"></span> Adenine (A)</span>
+                    <span class="leg-item"><span class="dot u"></span> Uracil (U)</span>
+                    <span class="leg-item"><span class="dot g"></span> Guanine (G)</span>
+                    <span class="leg-item"><span class="dot c"></span> Cytosine (C)</span>
+                </div>
+            </div>
+
+            <div class="viz-content" id="viz-heatmap">
+                <div id="heatmap" class="plot-container"></div>
+            </div>
+
+            <div class="viz-content" id="viz-list">
+                <div class="table-container">
+                    <table class="cyber-table">
+                        <thead>
+                            <tr>
+                                <th>Base i</th>
+                                <th>Nucleotide i</th>
+                                <th>Base j</th>
+                                <th>Nucleotide j</th>
+                                <th>Confidence</th>
+                            </tr>
+                        </thead>
+                        <tbody id="pairs-tbody">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="/static/script.js"></script>
+</body>
+</html>
